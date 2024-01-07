@@ -2,6 +2,8 @@
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
 import SocialLinks from './SocialLinks.astro';
+import { ModeToggle } from './ModeToggle';
+import '../styles/global.css'
 ---
 
 <header>
@@ -11,6 +13,9 @@ import SocialLinks from './SocialLinks.astro';
 			<HeaderLink href="/about">About</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 		</div>
+		<h3>Hello
+		<ModeToggle client:only="react"/>
+	</h3>
 		<SocialLinks/>
 	</nav>
 </header>

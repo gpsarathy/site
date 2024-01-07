@@ -1,7 +1,9 @@
 ---
+import { ModeToggle } from "src/components/ModeToggle";
 import { SITE_TITLE } from "../../consts";
 import Layout from "../../layouts/BlogPost.astro";
 import SideNav from "./sideNav.astro";
+import '../../styles/global.css'
 
 const yearsOfExperience = ( (new Date().getTime() - new Date(2018,0,1).getTime() )/ (12 * 30 * 24 * 60 * 60 * 1000 )).toFixed(1)
 ---
@@ -13,6 +15,7 @@ const yearsOfExperience = ( (new Date().getTime() - new Date(2018,0,1).getTime()
 	heroImage="/about_dev.png"
 >
 	<SideNav/>
+	<ModeToggle client:load/>
 	<p id="about">
 		A passionate learner of technologies. Studied Engineering in Electrical
 		and Electronics.
@@ -68,3 +71,21 @@ const yearsOfExperience = ( (new Date().getTime() - new Date(2018,0,1).getTime()
 		<h5>Skills</h5>
 
 </Layout>
+<script is:inline>
+	const getThemePreference = () => {
+		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+			return localStorage.getItem('theme');
+		}
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	};
+	const isDark = getThemePreference() === 'dark';
+	document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+ 
+	if (typeof localStorage !== 'undefined') {
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('dark');
+			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		});
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+	}
+</script>
